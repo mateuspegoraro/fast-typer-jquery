@@ -5,6 +5,7 @@ $(function(){
     atualizaTamanhoFrase();
     inicializaContadores();
     inicializaCronometro();
+    inicializaMarcadores();
     $("#botao-reiniciar").click(reiniciaJogo);
 });
 
@@ -42,7 +43,7 @@ function inicializaCronometro() {
                 campo.attr("disabled", true);
                 clearInterval(cronometroID);
                 //campo.addClass("campo-desativado");
-                campo.toggleClass("campo-desativado");//on/off
+                campo.addClass("campo-desativado");//on/off
             }
         }, 1000);
     });
@@ -50,10 +51,20 @@ function inicializaCronometro() {
 
 $("#botao-reiniciar").click(reiniciaJogo);
 
-var frase = $(".frase").text();
-campo.on("input", function(){
-  
-});
+function inicializaMarcadores(){
+  var frase = $(".frase").text();
+  campo.on("input", function(){
+      var digitado = campo.val();
+      var comparavel = frase.substr(0, digitado.length);
+      if(digitado == comparavel){
+        campo.addClass("campo-correto");
+        campo.removeClass("campo-incorreto");
+      } else {
+        campo.removeClass("campo-correto");
+        campo.addClass("campo-incorreto");
+      }
+  });
+}
 
 function reiniciaJogo(){
     campo.attr("disabled", false);
@@ -65,4 +76,6 @@ function reiniciaJogo(){
     campo.removeClass("campo-desativado");
     //campo.toggleClass("campo-desativado");//on/off
     inicializaCronometro();
+    campo.removeClass("campo-correto");
+    campo.removeClass("campo-incorreto");
 }
